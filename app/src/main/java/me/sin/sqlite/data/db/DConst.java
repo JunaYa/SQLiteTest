@@ -4,7 +4,7 @@ package me.sin.sqlite.data.db;
  * Created by sin on 2016/7/15.
  */
 public class DConst {
-    public static final int CURRENT_VERSION = 2;
+    public static final int CURRENT_VERSION = 1;
     public static final String DATABASE_NAME = "Message.db";
 
     /**
@@ -14,13 +14,14 @@ public class DConst {
             + "id integer primary key autoincrement"
             + ", title varchar(20)"
             + ", content varchar(400)"
-            + ", date varchar(20)"
+            + ", date long(20)"
+            + ", tag varchar(40)"
             + ");";
 
     /**
      *表里插入字段
      */
-    public static final String ALTER_TABLE_NOTE = "alter table notes add tag varchar(20)";
+    public static final String ALTER_TABLE_NOTE = "alter table notes add user_id varchar(20)";
 
     /**
      * 创建 User 表
@@ -34,4 +35,7 @@ public class DConst {
             +", qq varchar(20)"
             +", GitHub varChar(40)"
             + ");";
+
+    //创建表tag
+    public static final String CREATE_TABLE_TAG = "create table tag(id integer primary key autoincrement, name varchar(20), date long);";
 }

@@ -16,6 +16,11 @@ import me.sin.sqlite.data.modle.Note;
  */
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
     private List<Note> mNoteList;
+    private NoteClick mNoteClick;
+
+    public void setNoteClick(NoteClick noteClick) {
+        mNoteClick = noteClick;
+    }
 
     public void setNoteList(List<Note> noteList) {
         mNoteList = noteList;
@@ -28,16 +33,31 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
         return new NoteHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder(NoteHolder holder, int position) {
-        Note note = mNoteList.get(position);
+    public void onBindViewHolder(final NoteHolder holder, final int position) {
+        final Note note = mNoteList.get(position);
 
         holder.title.setText(note.title);
         holder.date.setText(note.date);
         holder.content.setText(note.content);
-    }
 
+        if (mNoteClick != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mNoteClick.onClick(position, note);
+                }
+            });
+
+            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    mNoteClick.onLongClick(position,note);
+                    return true;
+                }
+            });
+        }
+    }
 
     @Override
     public int getItemCount() {
@@ -55,5 +75,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteHolder> {
             date = (TextView) itemView.findViewById(R.id.date);
             content = (TextView) itemView.findViewById(R.id.content);
         }
+    }
+
+    public interface NoteClick {
+        void onClick(int pos, Note note);
+
+        void onLongClick(int pos, Note note);
     }
 }
